@@ -1,0 +1,8 @@
+.flights-table thead {
+    background-color: #eee;
+}
+
+.flights-table tr * {
+    text-align: center;
+    padding: 2px 10px;
+}
