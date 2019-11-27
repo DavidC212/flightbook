@@ -19,16 +19,11 @@ Route::get('/', 'MonController@index');
 // Route::get('{n}', function ($n) {
 //     return 'Je suis la page '.$n.' !';
 // })->where('n','[0-9]+');
-Route::get('flights/{id}/edit', function () {
-    return 'Je suis la page de modification';
-});
-Route::get('flights/{id}/delete', function () {
-    return 'Je suis la page de suppression';
-});
-Route::get('flights/add', function () {
-    return 'Je suis la page d\'ajout';
-});
-Route::get('flights/{id}', 'HomeController@flight')->name('show');
+// Route::get('flights/{id}/edit', 'HomeController@edit');
+// Route::get('flights/{id}/delete', 'HomeController@delete');
+Route::get('flights/add', 'HomeController@create')->name('createFlight');
+Route::post('flights', 'HomeController@store')->name('storeFlight');
+Route::get('flights/{id}', 'HomeController@flight')->name('show')->middleware('auth');
 // Route::get('test', function () {
 //     // return ['un','2','Troie'];
 //     return response('teeeeeeeest...',503);

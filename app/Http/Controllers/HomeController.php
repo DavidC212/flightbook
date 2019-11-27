@@ -40,12 +40,41 @@ class HomeController extends Controller
         //     'flights'=> $flights,
         // ]);
     }
+
     public function flight($id)
     {
-        // $user=Auth::user();
-        $flight = Flight::where('id',$id)->get();
-        return view('show',[
-            'flight'=> $flight,
+        $flight = Flight::find($id);
+        $user=Auth::user();
+        if (isset($flight)) {
+            if ($user->id == $flight->user_id) {
+                return view('show',[
+                    'flight'=> $flight,
+                ]);
+            }else{
+                $nope = "Vous n'avez pas accès à ce vol !";
+                return view('show',[
+                    'nope'=> $nope,
+                ]);
+            }
+        }else{
+            $erreur = "Ce vol n'existe pas...";
+            return view('show',[
+                'erreur'=> $erreur,
+            ]);
+        }
+    }
+
+    public function create(){
+        // code...
+        return view('form');
+    }
+
+    public function store(){
+        // code...
+        $user=Auth::user();
+        $flights = $user->flights()->get();
+        return view('home',[
+            'flights'=> $flights,
         ]);
     }
 }
