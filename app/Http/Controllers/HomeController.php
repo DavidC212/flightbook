@@ -9,6 +9,7 @@ use App\Glider;
 use App\Nature;
 use App\Board_function;
 use App\Flight;
+use App\Http\Requests\StoreNewFlight;
 
 class HomeController extends Controller
 {
@@ -41,6 +42,11 @@ class HomeController extends Controller
         // ]);
     }
 
+    /**
+     * Ça fait un truc.
+     * use @method Yakaleer;
+     *
+     */
     public function flight($id)
     {
         $flight = Flight::find($id);
@@ -64,17 +70,42 @@ class HomeController extends Controller
         }
     }
 
+    /**
+     * Ça create un truc.
+     *
+     */
     public function create(){
         // code...
-        return view('form');
-    }
-
-    public function store(){
-        // code...
-        $user=Auth::user();
-        $flights = $user->flights()->get();
-        return view('home',[
-            'flights'=> $flights,
+        $gliders = Glider::all();
+        $board_functions = Board_function::all();
+        $natures = Nature::all();
+        return view('form',[
+            'gliders'=> $gliders,
+            'board_functions'=> $board_functions,
+            'natures'=> $natures,
         ]);
     }
+
+    /**
+     * Ça store un truc.
+     *
+     */
+    public function store(StoreNewFlight $request){
+        // code...
+        $user=Auth::user();
+        $newFlight=new Flight;
+        $newFlight->fill($request->except(['_token']));
+        $newFlight->user_id = $user->id;
+
+        if ($newFlight->save()) {
+            $request->session()->flash('status',"Vol enregistré avec succès");
+            $request->session()->flash('alert-class',"alert-success");
+            return redirect()->action('HomeController@index');
+        }
+    }
+
+    /**
+     * Et là y'a rien..
+     *
+     */
 }

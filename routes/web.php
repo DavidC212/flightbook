@@ -23,7 +23,7 @@ Route::get('/', 'MonController@index');
 // Route::get('flights/{id}/delete', 'HomeController@delete');
 Route::get('flights/add', 'HomeController@create')->name('createFlight');
 Route::post('flights', 'HomeController@store')->name('storeFlight');
-Route::get('flights/{id}', 'HomeController@flight')->name('show')->middleware('auth');
+Route::get('flights/{id}', 'HomeController@flight')->where('id','[0-9]+')->name('show')->middleware('auth');
 // Route::get('test', function () {
 //     // return ['un','2','Troie'];
 //     return response('teeeeeeeest...',503);

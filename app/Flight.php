@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Flight extends Model
 {
+    protected $fillable = ['date','glider_id','nature_id','board_function_id','double_control','captain','instructor'];
+
     public function user()
     {
         return $this->belongsTo('App\User');
