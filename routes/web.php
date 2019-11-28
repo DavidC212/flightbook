@@ -22,6 +22,10 @@ Route::get('/', 'MonController@index');
 // Route::get('flights/{id}/edit', 'HomeController@edit');
 // Route::get('flights/{id}/delete', 'HomeController@delete');
 Route::get('flights/add', 'HomeController@create')->name('createFlight');
+Route::get('flights/{id}/edit', 'HomeController@edit')->where('id','[0-9]+')->name('editFlight');
+Route::put('flights/{id}/update', 'HomeController@update')->where('id','[0-9]+')->name('updateFlight');
+Route::delete('flights/{id}/delete', 'HomeController@delete')->where('id','[0-9]+')->name('deleteFlight');
+// Route::delete('flights/{id}/suppress', 'HomeController@suppress')->where('id','[0-9]+')->name('suppressFlight');
 Route::post('flights', 'HomeController@store')->name('storeFlight');
 Route::get('flights/{id}', 'HomeController@flight')->where('id','[0-9]+')->name('show')->middleware('auth');
 // Route::get('test', function () {

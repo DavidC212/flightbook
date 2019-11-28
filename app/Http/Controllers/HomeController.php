@@ -74,8 +74,8 @@ class HomeController extends Controller
      * Ça create un truc.
      *
      */
-    public function create(){
-        // code...
+    public function create()
+    {
         $gliders = Glider::all();
         $board_functions = Board_function::all();
         $natures = Nature::all();
@@ -91,10 +91,13 @@ class HomeController extends Controller
      *
      */
     public function store(StoreNewFlight $request){
+
+        $validated = $request->validated();
+
         // code...
         $user=Auth::user();
         $newFlight=new Flight;
-        $newFlight->fill($request->except(['_token']));
+        $newFlight->fill($validated);
         $newFlight->user_id = $user->id;
 
         if ($newFlight->save()) {
@@ -108,4 +111,89 @@ class HomeController extends Controller
      * Et là y'a rien..
      *
      */
+
+
+    /**
+     * Là ça édite un autre truc
+     *
+     */
+    public function edit($id)
+    {
+        $flight = Flight::find($id);
+        $gliders = Glider::all();
+        $natures = Nature::all();
+        $board_functions = Board_function::all();
+        $user=Auth::user();
+
+        if (isset($flight)) {
+            if ($user->id == $flight->user_id) {
+                return view('form',[
+                    'flight'=> $flight,
+                    'gliders'=> $gliders,
+                    'natures'=> $natures,
+                    'board_functions'=> $board_functions,
+                ]);
+            }else{
+                $nope = "Où tu crois aller, là ?";
+                return view('show',[
+                    'nope'=> $nope,
+                ]);
+            }
+        }else{
+            $erreur = "Raté.";
+            return view('show',[
+                'erreur'=> $erreur,
+            ]);
+        }
+
+    }
+
+    /**
+     * Là ça update un truc
+     *
+     */
+    public function update(StoreNewFlight $request, $id)
+    {
+        $validated = $request->validated();
+
+        $flight = Flight::find($id);
+        $flight->fill($validated);
+
+        if ($flight->save()) {
+            $request->session()->flash('status',"Vol modifié avec succès");
+            $request->session()->flash('alert-class',"alert-success");
+            return redirect()->action('HomeController@index');
+        }
+    }
+
+    /**
+     * Là ça delete un truc
+     *
+     */
+    public function delete(Request $request, $id)
+    {
+        $flight = Flight::find($id);
+
+        if ($flight && $flight->delete()) {
+            $request->session()->flash('status',"Vol supprimé avec succès");
+            $request->session()->flash('alert-class',"alert-success");
+            return redirect()->action('HomeController@index');
+        }
+    }
+
+    // /**
+    //  * Là ça suppr un truc
+    //  *
+    //  */
+    // public function suppress($id)
+    // {
+    //     // code...
+    //     $flight = Flight::find($id);
+
+    //     if ($flight->forcedelete()) {
+    //         // session()->flash('status',"Vol modifié avec succès");
+    //         // session()->flash('alert-class',"alert-success");
+    //         return redirect()->action('HomeController@index');
+    //     }
+    // }
 }

@@ -50,8 +50,9 @@
                             <td>{{$flight->instructor}}</td>
                             <td>{{$flight->board_function->board_function_code}}</td>
                             <td>{{$flight->nature->nature_code}}</td>
-                            <td><a href="#">Modifier</a></td>
-                            <td><a href="#">Supprimer</a></td>
+                            <td><a href={{route('editFlight',['id' => $flight->id])}}>Modifier</a></td>
+                            {{-- <td><a href={{route('deleteFlight',['id' => $flight->id])}} class="suppr-vol">Supprimer</a></td> --}}
+                            <td><form method="POST" action={{route('deleteFlight',['id' => $flight->id])}}>@csrf @method('DELETE')<button type="submit" class="suppr-vol">Supprimer</button></form></td>
                         </tr>
                         <br />
                     @php
